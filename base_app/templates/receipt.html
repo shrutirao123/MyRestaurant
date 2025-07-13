@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt | MyRestaurant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+        }
+        .receipt-box {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .highlight {
+            color: #f1c40f;
+        }
+        .text-muted {
+            color: #bfbfbf !important;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="receipt-box text-center">
+        <h2>🎉 Thank you for your order!</h2>
+        <p class="thank-you">We are preparing your food 🍽️</p>
+        
+        <hr>
+        
+        <h4>🧾 Order Receipt</h4>
+        <p><strong>Payment Method:</strong> {{ payment_method }}</p>
+        
+        {% if upi_id %}
+        <p><strong>UPI ID:</strong> {{ upi_id }}</p>
+        {% endif %}
+        
+        <p><strong>Date:</strong> {{ current_date }}</p>
+        <p><strong>Order ID:</strong> {{ order_id }}</p>
+        </hr>        
+        <!-- <p class="text-muted">This is a fake receipt for demo purposes only.</p> -->
+    </div>
+    <p class="text-muted">This is a fake receipt for demo purposes only.</p>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fast Food Restaurant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #111111;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .menu-heading {
+  font-style: italic;
+  font-weight: bold;
+  color: #ffc107;
+  text-shadow: 1px 1px 4px rgba(255, 193, 7, 0.4);
+  font-family: 'Georgia', serif;
+}
+
+
+.menu-heading1 {
+  font-style: italic;
+  font-weight: 900;
+  color: #cd9c0a;
+  font-family: 'Segoe UI';
+  }
+    .navbar {
+      background-color: #000;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px;
+      background: linear-gradient(to right, #111, #222);
+    }
+
+    .hero-text {
+      max-width: 500px;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .hero-text p {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #ddd;
+    }
+
+    .btn-order {
+      margin-top: 30px;
+      background-color: #ffc107;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-order:hover {
+      background-color: #ffca2c;
+    }
+
+    .hero img {
+      width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+    }
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  padding: 60px 40px;
+  color: white;
+  gap: 30px;
+  background: radial-gradient(circle at top left, #1a1a1a, #111);
+
+}
+
+.hero-text h1 {
+  font-style: italic;
+  font-weight: 800;
+  color: #ffc107;
+}
+
+.hero-text p {
+  font-style: italic;
+  font-size: 16px;
+  color: #ccc;
+}
+
+.hero-image img {
+  max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+  transition: 0.3s;
+}
+
+.hero-image img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 40px rgba(255, 193, 7, 0.6);
+}
+
+.btn-warning {
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ffc107;
+}
+
+.btn-warning:hover {
+  transform: scale(1.1);
+  background-color: #ff9900;
+  box-shadow: 0 0 20px #ffcc00;
+}
+
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-text, .hero-image {
+  animation: fadeInUp 1s ease-out;
+}
+
+  </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="hero">
+  <div class="hero-text">
+    <h1 class="mb-4 menu-heading">Fast Food Restaurant
+    </h1>
+    <p class="mb-4 menu-heading1">Delicious burgers, crispy fries & hot meals delivered fresh to your table.</p>
+    <a href="{% url 'menu' %}" class="btn btn-order">Order Now</a>
+  </div>
+  <img src="{% static 'images/hero-burger.jpg' %}" alt="Burger with Fries">
+</div>
+<div class="row mt-5 text-center">
+  <div class="col-md-4">
+    <h5>🍕 Fresh Ingredients</h5>
+    <p>Only the best goes into our dishes</p>
+  </div>
+  <div class="col-md-4">
+    <h5>🛵 Fast Delivery</h5>
+    <p>Hot food delivered within 30 mins</p>
+  </div>
+  <div class="col-md-4">
+    <h5>💰 Budget Friendly</h5>
+    <p>Delicious meals at great prices</p>
+  </div>
+</div>
+
+
+</body>
+</html>

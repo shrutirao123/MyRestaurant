@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment | MyRestaurant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+        background-color: #121212;
+        color: white;
+    }
+    .box {
+        background-color: #1e1e1e;
+        padding: 30px;
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+    .btn-pay {
+        background-color: #f1c40f;
+        color: black;
+        font-weight: bold;
+    }
+  </style>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+  <div class="box">
+    <h2 class="mb-4">Choose Your Payment Method</h2>
+
+    <form method="POST" action="{% url 'payment' %}">
+      {% csrf_token %}
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" value="Cash on Delivery" checked>
+        <label class="form-check-label">Cash on Delivery</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" value="UPI" id="upi" onclick="toggleUPI(true)">
+        <label class="form-check-label" for="upi">UPI</label>
+      </div>
+    
+      <div id="upiInput" style="display:none; margin-top:10px;">
+        <label for="upi_id">Enter your UPI ID:</label>
+        <input type="text" name="upi_id" id="upi_id" class="form-control" placeholder="example@upi">
+      </div>      
+    
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" value="Card">
+        <label class="form-check-label">Debit/Credit Card</label>
+      </div>
+    
+      <button type="submit" class="btn btn-pay mt-4">Pay Now</button>
+
+      <label for="email">Enter your Email:</label>
+      <input type="email" name="user_email" class="form-control" required>
+
+    </form>
+
+    <script>
+      document.querySelector('.btn-pay').addEventListener('click', function(e) {
+        const selected = document.querySelector('input[name="payment_method"]:checked').value;
+    
+        if (selected === 'Cash on Delivery') {
+            // Allow form to submit normally
+            return;
+        }
+    
+        e.preventDefault(); // stop form submission for UPI & Card
+    
+        var options = {
+            "key": "rzp_test_gaCwXmEukWIdu8",  // Test key
+            "amount": 30000,  // ₹300 in paise
+            "currency": "INR",
+            "name": "MyRestaurant",
+            "description": "Order Payment",
+            "handler": function (response){
+                alert("✅ Payment Successful! ID: " + response.razorpay_payment_id);
+                window.location.href = "/payment-success/";
+            },
+            "prefill": {
+                "name": "Shruti Bhalerao",
+                "email": "shruti@example.com",
+                "contact": "9999999999"
+            },
+            "theme": {
+                "color": "#f1c40f"
+            }
+        };
+    
+        var rzp = new Razorpay(options);
+        rzp.open();
+      });
+    </script>
+    
+      
+      <script>
+        function toggleUPI(show) {
+          const upiDiv = document.getElementById("upiInput");
+          const upiRadio = document.querySelector('input[value="UPI"]');
+          if (upiRadio.checked) {
+            upiDiv.style.display = "block";
+          } else {
+            upiDiv.style.display = "none";
+          }
+        }
+      
+        // Call on page load if UPI is preselected
+        window.onload = toggleUPI;
+      </script>
+      
+  </div>
+</div>
+
+</body>
+</html>
