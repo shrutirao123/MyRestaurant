@@ -2,7 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.core.mail import send_mail
 from datetime import datetime
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 import random
+import difflib
+import re
 
 from .models import Booking, ContactMessage, CartItem
 
@@ -201,3 +206,76 @@ We are preparing your food 🍽️
         'current_date': current_date,
         'order_id': order_id
     })
+
+@csrf_exempt
+def chatbot_reply(request):
+    if request.method != "POST":
+        return JsonResponse({"reply": "Invalid request method."}, status=405)
+
+    try:
+        data = json.loads(request.body.decode("utf-8") if isinstance(request.body, (bytes, bytearray)) else request.body)
+        user_message = (data.get("message", "") or "").strip()
+        if not user_message:
+            return JsonResponse({"reply": "Please type something so I can help!"})
+
+        msg = user_message.lower()
+
+        small_talk = {
+            "hi": ["Hi! 👋 How can I help you today?", "Hello! Welcome to MyRestaurant — how can I assist?"],
+            "hello": ["Hello! 😊 What would you like to know?", "Hey there — how can I help you?"],
+            "how are you": ["I'm just a friendly bot — ready to help you order delicious food! 🍔", "Doing great! How can I help you today?"],
+            "who are you": ["I'm MyRestaurant's virtual assistant. I can help with menu, timings, booking and orders.", "I'm the restaurant assistant bot — here to help :)"],
+            "thanks": ["You're welcome! 😊", "Glad I could help!"],
+            "thank you": ["Anytime! If you want to order, just tell me what you'd like."],
+            "okay":["Anything else???"],
+            "yes":["Sure, I'm ready to listen..."]
+        }
+
+        # try to match small-talk phrases first (exact phrase or containing)
+        for key, replies in small_talk.items():
+            if key in msg:
+                return JsonResponse({"reply": random.choice(replies)})
+
+        faqs = {
+            "menu": 'Our menu includes Pizza, Burger, Pasta, Garlic Bread, Fries, Wraps and Momos. <a href="/menu/" target="_blank" style="color: Brown; text-decoration: underline; font-style:italic ;">View Menu</a>',
+            "timings": "We are open from 10:00 AM to 11:00 PM every day.",
+            "location": "We're located at MG Road, Pune, near City Mall. (Example address — update as needed.)",
+            "booking": 'You can book a table from the "Book Table" page <a href="/book/" style="color: Brown; text-decoration: underline,italic ;">View table</a> or call us at +91-9876543210.',
+            "payment methods": "We accept Cash, UPI, Credit/Debit cards and online payments via Razorpay.",
+            "delivery area": "We deliver within a 5 km radius. If you give your area name, I can check delivery availability.",
+            "offers": "Current offers: Buy 1 Pizza, Get 1 Cold Drink Free on Fridays; 20% off on weekends.",
+            "price": 'Average meal price ranges from ₹150 to ₹500 depending on items. For exact item prices check the menu page. <a href="/menu/" style="color:Brown; text-decoration: underline,italic;">View menu</a>'
+        }
+
+        for key in faqs.keys():
+            if key in msg:
+                return JsonResponse({"reply": faqs[key]})
+
+        closest = difflib.get_close_matches(msg, faqs.keys(), n=1, cutoff=0.45)
+        if closest:
+            return JsonResponse({"reply": faqs[closest[0]]})
+
+        if re.search(r"\bwhere\b.*\b(location|located|address)\b", msg) or "where" in msg and "located" in msg:
+            return JsonResponse({"reply": faqs["location"]})
+        if re.search(r"\b(book|booking|reserve|reservation)\b", msg):
+            return JsonResponse({"reply": faqs["booking"]})
+        if re.search(r"\b(payment|pay|card|upi)\b", msg):
+            return JsonResponse({"reply": faqs["payment methods"]})
+        if re.search(r"\b(deliver|delivery|deliveries|deliver to)\b", msg):
+            return JsonResponse({"reply": faqs["delivery area"]})
+        if re.search(r"\b(menu|what do you serve|what's available)\b", msg):
+            return JsonResponse({"reply": faqs["menu"]})
+        if re.search(r"\b(offer|discount|deal|sale)\b", msg):
+            return JsonResponse({"reply": faqs["offers"]})
+        if re.search(r"\b(price|cost|how much|rate)\b", msg):
+            return JsonResponse({"reply": faqs["price"]})
+
+        fallback = (
+            "Sorry, I didn't understand that. You can ask about our menu, timings, location, booking, "
+            "payment methods, offers or delivery area. If you want, type 'menu' or 'timings'."
+        )
+        return JsonResponse({"reply": fallback})
+
+    except Exception as e:
+        # safe error reply
+        return JsonResponse({"reply": "Sorry, something went wrong on server. " + str(e)}, status=500)

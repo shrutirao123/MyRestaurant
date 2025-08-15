@@ -16,5 +16,5 @@ urlpatterns = [
     path('process-payment/', views.process_payment, name='process_payment'),
     path('payment-success/', views.payment_success_view, name='payment_success'),
     path('receipt/', views.receipt_view, name='receipt'),
-
+    path("chatbot/", views.chatbot_reply, name="chatbot"),
 ]
