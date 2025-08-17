@@ -25,8 +25,12 @@ SECRET_KEY = 'django-insecure-fecxc(--qlf$g593vt89c8r=16bc6k*qq0^=%82^+7vt0z)v2z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'myrestaurant2.onrender.com',
+    'www.myrestaurant2.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]git add .
 
 # Application definition
 
