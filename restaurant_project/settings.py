@@ -27,10 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'myrestaurant2.onrender.com',
-    'www.myrestaurant2.onrender.com',
-    '127.0.0.1',
-    'localhost'
-]git add .
+    '.onrender.com',      # allows any subdomain of render.com
+    'localhost',
+    '127.0.0.1'
+]
+
 
 # Application definition
 
