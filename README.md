@@ -20,6 +20,36 @@ It features a **modern dark-themed UI** with stylish order receipts and session-
 - 🔒 **Session-based Cart Management** – Works without login.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+🤖 **Chatbot Integration**
+
+This project includes a built-in AI-powered chatbot to assist users.
+
+✨ **Chatbot Features**
+
+💬 Small Talk – Greets users and responds to casual messages (hi, hello, thanks).
+
+📋 FAQs Support – Instantly answers common queries about menu, timings, location, booking, offers, and delivery.
+
+📍 Context-Aware – Detects phrases like "where are you located?" or "how do I book a table?".
+
+🎨 UI Integration – Chatbot opens in a floating widget on the website with smooth toggle.
+
+⌨️ Typing Indicator – Shows “Bot is typing…” animation for a realistic experience.
+
+⚙️ **How It Works**
+
+Frontend: JavaScript handles chat window, typing effect, and message rendering.
+
+Backend: Django view (chatbot_reply) processes user queries and returns a JSON response.
+
+Responses: Predefined FAQs + fuzzy matching + regex detection.
+
+**Example**:
+
+You: menu  
+Bot: Our menu includes Pizza, Burger, Pasta, Garlic Bread, Fries, Wraps and Momos.  
+     👉 <a href="/menu/" target="_blank" style="color: brown; text-decoration: underline;">View Menu</a>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 🛠️ Tech Stack
 
