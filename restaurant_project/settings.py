@@ -23,14 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-fecxc(--qlf$g593vt89c8r=16bc6k*qq0^=%82^+7vt0z)v2z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    'myrestaurant2.onrender.com',   # your domain
-    '.onrender.com',                # any subdomain of render
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [

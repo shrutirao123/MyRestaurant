@@ -1,1 +1,1 @@
-# MyRestaurant
+# A restaurant project
